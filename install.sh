@@ -127,7 +127,10 @@ install_release_linux() {
 
 # ------------------------------------------------------------------ build from source
 linux_deps() {
-  if have pkg-config && pkg-config --exists webkit2gtk-4.1 gtk+-3.0 libpipewire-0.3 dbus-1 xcb xrandr gbm 2>/dev/null; then return 0; fi
+  if have pkg-config && pkg-config --exists webkit2gtk-4.1 gtk+-3.0 libpipewire-0.3 dbus-1 xcb xrandr gbm 2>/dev/null; then
+    pipewire_check
+    return 0
+  fi
   if have apt-get; then
     set -- apt-get install -y build-essential pkg-config curl git libwebkit2gtk-4.1-dev libgtk-3-dev librsvg2-dev libxdo-dev libssl-dev libxcb1-dev libxrandr-dev libdbus-1-dev libpipewire-0.3-dev libwayland-dev libegl-dev libgbm-dev libclang-dev
     pre=1
@@ -147,6 +150,14 @@ linux_deps() {
   confirm "Install them now with sudo?" || die "Cancelled. Install the packages above, then run this again."
   if [ -n "$pre" ]; then sudo_run apt-get update; fi
   sudo_run "$@"
+  pipewire_check
+}
+
+# The screen-capture library needs PipeWire 0.3.65+ (Ubuntu 24.04, Debian 12, Fedora 38 or newer).
+pipewire_check() {
+  if have pkg-config && ! pkg-config --atleast-version=0.3.65 libpipewire-0.3; then
+    die "Your distribution's PipeWire ($(pkg-config --modversion libpipewire-0.3 2>/dev/null || echo unknown)) is too old to build Annotate. Use Ubuntu 24.04 / Debian 12 / Fedora 38 or newer."
+  fi
 }
 
 ensure_rust() {

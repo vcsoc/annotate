@@ -61,7 +61,7 @@ Requirements: Rust (stable) plus the [Tauri system prerequisites](https://tauri.
 
 - macOS: Xcode Command Line Tools.
 - Windows: Visual Studio Build Tools (C++) and WebView2.
-- Debian/Ubuntu: `libwebkit2gtk-4.1-dev`, `libgtk-3-dev`, `librsvg2-dev`, `libxdo-dev`, `libpipewire-0.3-dev`, `libdbus-1-dev`, `libxcb1-dev`, `libxrandr-dev`, `libgbm-dev`, `libclang-dev`.
+- Linux: Ubuntu 24.04, Debian 12, Fedora 38 or newer, because PipeWire 0.3.65+ is needed for screen capture. On Debian/Ubuntu install `libwebkit2gtk-4.1-dev`, `libgtk-3-dev`, `librsvg2-dev`, `libxdo-dev`, `libpipewire-0.3-dev`, `libdbus-1-dev`, `libxcb1-dev`, `libxrandr-dev`, `libgbm-dev`, `libclang-dev`.
 
 The install scripts put the `annotate` command on your `PATH`. After a manual build you can do it yourself (it is the same binary as the app):
 

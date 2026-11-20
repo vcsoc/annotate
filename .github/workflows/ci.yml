@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, macos-latest, windows-latest]
+        os: [ubuntu-24.04, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -30,7 +30,7 @@ jobs:
   # The Pi extension and OpenCode plugin run inside those (Node-based) harnesses;
   # this optional job tests them. Annotate itself never needs Node.
   harness-plugins:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -49,7 +49,7 @@ jobs:
             args: --target universal-apple-darwin
           - os: windows-latest
             args: ''
-          - os: ubuntu-22.04
+          - os: ubuntu-24.04
             args: ''
     runs-on: ${{ matrix.os }}
     permissions:
