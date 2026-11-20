@@ -1,0 +1,10 @@
+node_modules/
+src-tauri/target/
+src-tauri/target-linux/
+src-tauri/gen/
+.annotate/
+.pi/
+.DS_Store
+*.log
+.env
+.env.*

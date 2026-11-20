@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annotate — Tutorials</title>
+<style>
+:root{--bg:#10141d;--panel:#161b26;--card:#1b2130;--line:#2c3650;--text:#edf1fa;--muted:#aab5cc;--blue:#7a99f7;--blue2:#3152af;--red:#ff3b65;--gold:#ffd45e;--green:#5ec28e;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;font:15px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+a{color:#90acf9}
+code{font:13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#232b3d;border:1px solid #2f3a52;border-radius:5px;padding:1px 5px}
+kbd{font:12px ui-monospace,Menlo,monospace;background:#262f43;border:1px solid #46536d;border-bottom-width:2px;border-radius:5px;padding:1px 6px}
+
+/* layout */
+.side{position:fixed;inset:0 auto 0 0;width:280px;background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:22px 16px 30px}
+main{margin-left:280px;padding:40px 56px 120px;max-width:1040px}
+.brand{display:flex;align-items:center;gap:10px;margin:0 6px 18px}
+.brand img{width:40px;height:40px}
+.brand strong{font-size:18px;display:block}
+.brand span{font-size:12px;color:var(--muted)}
+.search{width:100%;margin:0 0 14px;padding:8px 10px;border-radius:8px;border:1px solid #46536d;background:#262f43;color:var(--text);font:inherit;font-size:13px}
+.side h4{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#90acf9;margin:18px 8px 6px}
+.side a{display:block;padding:5px 10px;border-radius:7px;color:var(--muted);text-decoration:none;font-size:13.5px;border-left:2px solid transparent}
+.side a:hover{background:#1f2738;color:var(--text)}
+.side a.active{background:#1d2a48;color:var(--text);border-left-color:var(--gold)}
+.menu-toggle{display:none}
+
+/* content */
+section{padding-top:18px;margin-bottom:46px;border-top:1px solid #202839}
+section:first-of-type{border-top:0}
+h1{font-size:34px;line-height:1.2;margin:0 0 10px}
+h2{font-size:25px;margin:16px 0 8px}
+h3{font-size:17px;margin:26px 0 6px;color:#cfe0ff}
+.lead{font-size:17px;color:#cdd6ea;max-width:760px}
+.eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.time{font-size:12px;color:var(--muted);margin-left:8px;font-weight:400}
+
+/* steps */
+ol.steps{list-style:none;counter-reset:s;padding:0;margin:14px 0}
+ol.steps>li{counter-increment:s;position:relative;padding:2px 0 14px 46px}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:var(--red);border:2px solid #fff;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+ol.steps>li::after{content:"";position:absolute;left:15px;top:34px;bottom:2px;width:2px;background:#2f3a52}
+ol.steps>li:last-child::after{display:none}
+ol.steps>li>b:first-child{display:block;font-size:15.5px}
+
+/* boxes */
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0}
+.grid .card{margin:0}
+.grid .card h4{margin:0 0 4px;font-size:15px}
+.grid .card p{margin:0;color:var(--muted);font-size:13.5px}
+.tip,.warn,.note{border-radius:10px;padding:11px 14px 11px 44px;margin:14px 0;position:relative;font-size:14.5px}
+.tip{background:#173226;border:1px solid #2f7d55}.tip::before{content:"💡"}
+.warn{background:#3a2c14;border:1px solid #a7802f}.warn::before{content:"⚠️"}
+.note{background:#1d2a48;border:1px solid #46609d}.note::before{content:"ℹ️"}
+.tip::before,.warn::before,.note::before{position:absolute;left:14px;top:10px}
+.tabs{display:flex;gap:6px;margin:12px 0 0}
+.tabs button{font:inherit;font-size:13px;color:var(--muted);background:#1b2130;border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;padding:6px 14px;cursor:pointer}
+.tabs button[aria-selected=true]{background:#232b3d;color:var(--text);border-color:#46536d}
+.tab{display:none}.tab.show{display:block}
+.tab pre{margin-top:0;border-top-left-radius:0}
+
+/* code */
+pre{position:relative;background:#0b0f17;border:1px solid #2a3348;border-radius:10px;padding:14px 16px;overflow:auto;margin:12px 0}
+pre code{background:none;border:0;padding:0;font-size:13px;line-height:1.6;color:#dfe6f5}
+pre .c{color:#7f8aa3}
+.copy{position:absolute;top:8px;right:8px;font:12px system-ui;color:var(--muted);background:#1b2130;border:1px solid #46536d;border-radius:6px;padding:3px 9px;cursor:pointer;opacity:.75}
+.copy:hover{opacity:1;color:var(--text)}
+.label{font-size:11.5px;color:var(--muted);margin:14px 0 -6px;font-family:ui-monospace,Menlo,monospace}
+
+/* tables */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #263047;vertical-align:top}
+th{color:#90acf9;font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+
+/* mock Console */
+.hero{display:grid;grid-template-columns:1fr 290px;gap:34px;align-items:center;margin-bottom:10px}
+.mock{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;font-size:12px;box-shadow:0 18px 50px #0008}
+.mock .t{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.mock .t b{font-size:13px}.mock .badge{font-size:10px;border:1px solid #46536d;border-radius:5px;padding:0 5px;color:#cdd6ea}
+.mock .cap{display:flex}.mock .cap div{flex:1;background:var(--blue2);border:1px solid var(--blue);border-radius:6px 0 0 6px;text-align:center;padding:6px;font-weight:600}
+.mock .cap span{background:#2a3c78;border:1px solid var(--blue);border-left:0;border-radius:0 6px 6px 0;padding:6px 8px}
+.mock .dest{color:var(--muted);font-size:11px;margin:8px 0 2px}.mock .dest b{display:block;color:#cfe0ff;font-weight:400}
+.mock .entry{display:grid;grid-template-columns:62px 1fr;gap:8px;background:#1d2435;border:1px solid #334061;border-radius:6px;padding:5px;margin-top:8px}
+.mock .shot{height:44px;border-radius:4px;background:linear-gradient(#262f43 0 18%,#0b0f17 18%);position:relative}
+.mock .shot i{position:absolute;left:20%;top:40%;width:42%;height:34%;border:2px solid var(--red);background:#ff3b6522;border-radius:2px}
+.mock .foot{display:flex;gap:6px;justify-content:flex-end;margin-top:10px}
+.mock .foot span{border:1px solid #46536d;border-radius:6px;padding:2px 8px;background:#262f43}
+.mock .foot .send{background:#2f7d55;border-color:var(--green)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0}
+.flow span{background:#1d2a48;border:1px solid #46609d;border-radius:20px;padding:4px 12px;font-size:13px}
+.flow em{color:var(--muted);font-style:normal}
+.chat{background:#0b0f17;border:1px solid #2a3348;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:14px}
+.chat p{margin:6px 0}.chat .u{color:var(--gold)}.chat .a{color:#8fe0b0}
+.hidden{display:none!important}
+
+@media (max-width:900px){
+  .side{transform:translateX(-100%);transition:transform .2s;z-index:5}
+  .side.open{transform:none}
+  main{margin-left:0;padding:60px 20px 80px}
+  .hero{grid-template-columns:1fr}
+  .menu-toggle{display:block;position:fixed;top:12px;left:12px;z-index:6;font:inherit;background:var(--panel);color:var(--text);border:1px solid #46536d;border-radius:8px;padding:6px 12px}
+}
+</style>
+</head>
+<body>
+<button class="menu-toggle" aria-label="Open navigation">☰ Menu</button>
+<nav class="side" aria-label="Tutorials">
+  <div class="brand"><img src="../src-tauri/icons/128x128.png" alt=""><div><strong>Annotate</strong><span>Tutorials &amp; examples</span></div></div>
+  <input class="search" type="search" placeholder="Filter topics…" aria-label="Filter topics">
+  <h4>Getting started</h4>
+  <a href="#welcome">Welcome</a>
+  <a href="#install">Install Annotate</a>
+  <a href="#first">Your first annotation</a>
+  <a href="#console">A tour of the Console</a>
+  <h4>Use with your tools</h4>
+  <a href="#pi">Annotate + Pi</a>
+  <a href="#claude-code">Claude Code, Codex &amp; Gemini</a>
+  <a href="#opencode">OpenCode</a>
+  <a href="#desktop">ChatGPT, Claude &amp; other apps</a>
+  <a href="#terminal">Start a new terminal session</a>
+  <a href="#wait">Any agent with a shell</a>
+  <a href="#clipboard">Copy into documents &amp; slides</a>
+  <h4>Going further</h4>
+  <a href="#marks">Several marks in one screenshot</a>
+  <a href="#shortcut">Shortcuts &amp; settings</a>
+  <a href="#custom">Add your own harness</a>
+  <a href="#cli">Command-line reference</a>
+  <a href="#trouble">Troubleshooting</a>
+</nav>
+
+<main>
+<!-- ============================================================ -->
+<section id="welcome">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Annotate 1.0</div>
+      <h1>Point at anything on your screen — and tell your AI what to change.</h1>
+      <p class="lead">Annotate takes a screenshot of a <b>whole application</b>, highlights the area you mark, and keeps your note with it. Collect a few, then send them to <b>Pi, Claude Code, Codex, OpenCode, ChatGPT, Claude</b> or almost any other AI tool — or copy them into a document.</p>
+      <div class="flow"><span>＋ Capture</span><em>→</em><span>Mark an area</span><em>→</em><span>Write a note ✓</span><em>→</em><span>Send ➤</span></div>
+    </div>
+    <div class="mock" aria-hidden="true">
+      <div class="t"><b>✎ Annotate Console</b><span class="badge">⌘⇧A</span></div>
+      <div class="cap"><div>＋ Capture (1s)</div><span>✎ Freehand</span></div>
+      <div class="dest">Send to harness / session<b>Pi · my-app : ~/projects/</b></div>
+      <div class="entry"><div class="shot"><i></i></div><div><b style="color:#cfe0ff">#1</b> Make this button blue and move it to the right</div></div>
+      <div class="entry"><div class="shot"><i style="left:50%;top:25%;width:35%"></i></div><div><b style="color:#cfe0ff">#2</b> 2 marks · 1. Typo here 2. Use a softer grey</div></div>
+      <div class="foot"><span>Follow-up ▾</span><span>⧉</span><span>🗑</span><span class="send">➤ 2</span></div>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="card"><h4>📸 The whole app, not a crop</h4><p>Your AI sees the full window with your highlight, so it understands the context.</p></div>
+    <div class="card"><h4>🧭 Works with any harness</h4><p>Terminal agents, desktop chat apps, a browser app, or just a folder.</p></div>
+    <div class="card"><h4>📋 Paste anywhere</h4><p>Copy an annotation into Word, PowerPoint, Google Docs, a PDF or a chat.</p></div>
+    <div class="card"><h4>🔒 Nothing is sent by itself</h4><p>Annotations stay in the Console until you press Send.</p></div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="install">
+  <h2>Install Annotate <span class="time">one command</span></h2>
+  <p>Copy the line for your computer into a terminal and press Enter. It downloads Annotate, installs it, and puts the <code>annotate</code> command on your PATH.</p>
+  <div class="label">macOS / Linux — Terminal</div>
+<pre><code>curl -fsSL https://raw.githubusercontent.com/vcsoc/annotate/HEAD/install.sh | sh</code></pre>
+  <div class="label">Windows — PowerShell</div>
+<pre><code>powershell -c "irm https://raw.githubusercontent.com/vcsoc/annotate/HEAD/install.ps1 | iex"</code></pre>
+  <div class="label">Already use Rust? — any OS</div>
+<pre><code>cargo install --git https://github.com/vcsoc/annotate annotate --locked</code></pre>
+  <div class="tip">Want Pi connected straight away? Add the integration to the same line:<br><code>curl -fsSL https://raw.githubusercontent.com/vcsoc/annotate/HEAD/install.sh | sh -s -- --integrations pi</code></div>
+  <p>If there is no ready-made download for your system, the installer builds Annotate for you. It installs <b>Rust</b> and the required system libraries first, asking before it does, and the first build takes a few minutes. Annotate is a native <b>Rust + Tauri</b> app, so no Node.js or npm is involved.</p>
+  <p>To remove it later: <code>curl -fsSL https://raw.githubusercontent.com/vcsoc/annotate/HEAD/install.sh | sh -s -- --uninstall</code>. Your settings and saved annotations are kept.</p>
+
+  <h3>Prefer to build it by hand?</h3>
+
+  <div class="tabs" role="tablist" data-group="os">
+    <button role="tab" aria-selected="true" data-tab="mac">macOS</button>
+    <button role="tab" aria-selected="false" data-tab="win">Windows</button>
+    <button role="tab" aria-selected="false" data-tab="linux">Linux</button>
+  </div>
+  <div class="tab show" data-group="os" data-tab="mac">
+<pre><code><span class="c"># 1. Tools (skip what you already have)</span>
+xcode-select --install
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+cargo install tauri-cli --version "^2" --locked
+
+<span class="c"># 2. Get Annotate and build the app</span>
+git clone https://github.com/vcsoc/annotate.git
+cd annotate/src-tauri
+cargo tauri build
+
+<span class="c"># 3. Install it</span>
+cp -R target/release/bundle/macos/Annotate.app /Applications/
+
+<span class="c"># 4. (Recommended) make the `annotate` command available in terminals</span>
+sudo ln -sf /Applications/Annotate.app/Contents/MacOS/annotate /usr/local/bin/annotate</code></pre>
+    <div class="note">The first time you capture, macOS asks for <b>Screen Recording</b> permission. Allow it in <i>System Settings → Privacy &amp; Security → Screen &amp; System Audio Recording</i>, then reopen Annotate.</div>
+  </div>
+  <div class="tab" data-group="os" data-tab="win">
+<pre><code><span class="c"># 1. Tools: install these first</span>
+<span class="c">#    • Rust:      https://rustup.rs   (choose the default MSVC option)</span>
+<span class="c">#    • Git:       https://git-scm.com</span>
+<span class="c">#    • "Desktop development with C++" from Visual Studio Build Tools</span>
+cargo install tauri-cli --version "^2" --locked
+
+<span class="c"># 2. Build (PowerShell)</span>
+git clone https://github.com/vcsoc/annotate.git
+cd annotate\src-tauri
+cargo tauri build
+
+<span class="c"># 3. Run the installer it created:</span>
+<span class="c">#    target\release\bundle\msi\Annotate_1.0.0_x64_en-US.msi</span></code></pre>
+    <div class="note">WebView2 is already part of Windows 11. On Windows 10 the installer adds it if it is missing.</div>
+  </div>
+  <div class="tab" data-group="os" data-tab="linux">
+<pre><code><span class="c"># 1. Tools (Debian / Ubuntu)</span>
+sudo apt install git build-essential curl libwebkit2gtk-4.1-dev libgtk-3-dev \
+  librsvg2-dev libxdo-dev libssl-dev libxcb1-dev libxrandr-dev libdbus-1-dev \
+  libpipewire-0.3-dev libwayland-dev libegl-dev libgbm-dev libclang-dev
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+cargo install tauri-cli --version "^2" --locked
+
+<span class="c"># 2. Build</span>
+git clone https://github.com/vcsoc/annotate.git
+cd annotate/src-tauri
+cargo tauri build
+
+<span class="c"># 3. Install the package it created, e.g.</span>
+sudo apt install ./target/release/bundle/deb/Annotate_1.0.0_*.deb</code></pre>
+    <div class="note">On <b>Hyprland</b> or <b>sway</b>, also install <code>grim</code> and <code>slurp</code> (and <code>wtype</code> if you want Annotate to paste into apps).</div>
+  </div>
+
+  <h3>Check that it works</h3>
+<pre><code>annotate --version
+annotate harnesses        <span class="c"># lists every tool Annotate found on this computer</span></code></pre>
+  <div class="tip">Just want to try it without installing? Run <code>cargo run</code> inside <code>annotate/src-tauri</code>.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="first">
+  <h2>Your first annotation <span class="time">≈ 1 minute</span></h2>
+  <p>Open the app you want to talk about (a web page, an editor, anything), then open <b>Annotate</b>. A narrow <i>Console</i> panel docks to the right of your screen.</p>
+  <ol class="steps">
+    <li><b>Click “＋ Capture”</b>The Console hides. You have one second to get the app ready (for example, reopen a menu). Pressing <kbd>⌘/Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> does the same with no countdown.</li>
+    <li><b>Mark the area</b>Drag over the part of the app you mean. <b>Freehand</b> draws a loop; <b>Area</b> draws a rectangle. Switch at the top of the screen, or press <kbd>A</kbd> / <kbd>F</kbd>. <kbd>Esc</kbd> cancels.</li>
+    <li><b>Write your note</b>A small note box opens right next to your mark. Write what you want, as you would to a colleague: <i>“Make this button blue and move it to the right.”</i></li>
+    <li><b>Save with ✓</b>Click <b>✓</b> or press <kbd>⌘/Ctrl</kbd>+<kbd>Enter</kbd>. The annotation appears in the Console. <b>Nothing has been sent yet.</b></li>
+    <li><b>Repeat as often as you like</b>Collect up to 8 annotations (you can raise that to 12 in Settings).</li>
+    <li><b>Choose where it goes, then Send</b>Pick a destination in <b>Send to harness / session</b> and press the green <b>➤</b>. Everything is delivered together.</li>
+  </ol>
+  <div class="tip">Each saved picture is the <b>entire application window</b> with your mark drawn on it. Check it for passwords or private messages before you send.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="console">
+  <h2>A tour of the Console</h2>
+  <table>
+    <tr><th>Control</th><th>What it does</th></tr>
+    <tr><td><b>＋ Capture</b> + tool menu</td><td>Start a new annotation with Freehand or Area.</td></tr>
+    <tr><td><b>Send to harness / session</b></td><td>Where your batch goes. Grouped into <i>Live sessions</i>, <i>Start in a terminal</i>, <i>Desktop apps</i>, <i>Browser</i> and <i>Other</i>.</td></tr>
+    <tr><td><b>📁 folder chip</b></td><td>Appears for destinations that start something in a project folder. Click it to choose the folder.</td></tr>
+    <tr><td><b>Timeline</b></td><td>Your saved annotations. Click one to edit its note. <b>↻ Retake</b> captures it again, <b>⊕ Reuse</b> starts a new one with the same note, <b>＋ Mark</b> adds more marks, <b>⧉ Copy</b> copies it, <b>Remove</b> deletes it.</td></tr>
+    <tr><td><b>Send as</b></td><td>How the destination receives it — e.g. <i>Follow-up</i> or <i>Queued</i> for Pi, <i>Paste</i> or <i>Paste and send</i> for desktop apps.</td></tr>
+    <tr><td><b>⧉ · 🗑 · ➤</b></td><td>Copy all, discard all, send all.</td></tr>
+    <tr><td><b>⚙</b></td><td>Settings, including Integrations.</td></tr>
+  </table>
+  <p>Prefer something smaller? In <b>⚙ → Appearance → Console design</b> choose <b>Command pill</b>: a slim bar at the top of the screen that opens into a tray. Drag the timeline Console near the left or right edge of a screen and it docks there.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="pi">
+  <h2>Annotate + Pi <span class="time">≈ 3 minutes</span></h2>
+  <p>With the Pi integration, every open Pi session shows up in Annotate as a <b>live destination</b>, and the <code>/annotate</code> command in Pi opens the Console aimed at that session. Your annotations arrive in Pi as a normal message with all the screenshots attached.</p>
+
+  <h3>Step 1 — Remove the old pi-annotate package (if you have it)</h3>
+  <p>The new integration replaces the older <b>pi-annotate</b> extension. Both add an <code>/annotate</code> command, so only keep one.</p>
+<pre><code>pi remove https://github.com/vcsoc/pi-annotate.git</code></pre>
+  <div class="note">Not ready to switch yet? Pi sessions that still run the old pi-annotate already appear in Annotate's destination list, and sending to them works. You can skip to <a href="#pi-use">Step 3</a>.</div>
+
+  <h3>Step 2 — Install the Pi integration</h3>
+  <p><b>Either</b> in the app: <b>⚙ Settings → Harnesses → Integrations → Pi → Install</b>.</p>
+  <p><b>Or</b> in a terminal:</p>
+<pre><code>annotate integrations install pi</code></pre>
+  <p>This adds one file, <code>~/.pi/agent/extensions/annotate/index.ts</code>. Then, in each Pi session that is already open, run:</p>
+<pre><code>/reload</code></pre>
+
+  <h3 id="pi-use">Step 3 — Use it</h3>
+  <ol class="steps">
+    <li><b>In Pi, type <code>/annotate</code></b>Annotate opens (or comes to the front) and its destination is set to <i>this</i> Pi session.</li>
+    <li><b>Capture and write notes</b>Mark the problems in your app as described in <a href="#first">Your first annotation</a>.</li>
+    <li><b>Choose “Send as”</b><b>Follow-up</b> waits until Pi finishes what it is doing. <b>Queued (steering)</b> is picked up at the next step of the current task.</li>
+    <li><b>Press ➤ Send</b>Pi receives one message with every screenshot and note, and starts working.</li>
+  </ol>
+  <div class="chat"><p class="u">You (in Annotate): #1 “This table header should stay visible when I scroll.” #2 “Use our brand blue here.”</p><p class="a">Pi: I can see both screenshots. The header is in <code>src/components/Table.tsx</code> — I’ll make it sticky, and update the button colour in <code>theme.css</code>…</p></div>
+  <table>
+    <tr><th>In Pi</th><th>What it does</th></tr>
+    <tr><td><code>/annotate</code></td><td>Open the Console and aim it at this session (your saved annotations are kept).</td></tr>
+    <tr><td><code>/annotate help</code></td><td>A short reminder of the workflow.</td></tr>
+    <tr><td><code>/annotate stop</code></td><td>Close the Console (unsent annotations are discarded).</td></tr>
+  </table>
+  <div class="tip">Have several Pi sessions open? They all appear in the dropdown as <i>Pi · project-name</i>. Pick the one that should do the work. Your model must be able to read images.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="claude-code">
+  <h2>Claude Code, Codex &amp; Gemini CLI</h2>
+  <p>These tools connect through Annotate's built-in <b>MCP server</b>. Once installed, every running session appears as a live destination, and the AI can even <b>ask you</b> to annotate something.</p>
+  <h3>Install</h3>
+<pre><code>annotate integrations install claude-code     <span class="c"># Claude Code (MCP + skill)</span>
+annotate integrations install codex           <span class="c"># Codex CLI   (MCP + skill)</span>
+annotate integrations install gemini          <span class="c"># Gemini CLI  (MCP)</span></code></pre>
+  <p>…or click <b>Install</b> next to each in <b>⚙ Settings → Integrations</b>. Restart any session that was already open.</p>
+  <h3>Example: let the AI ask you</h3>
+  <div class="chat"><p class="u">You: The settings page looks wrong — I'll show you.</p><p class="a">Claude: <i>(calls <code>request_annotations</code> — the Annotate Console opens, aimed at this session)</i></p><p class="u">You: capture, mark the problems, press Send.</p><p class="a">Claude: Thanks — I can see the overlapping labels in screenshot 1 and the cut-off button in screenshot 2. Fixing both…</p></div>
+  <h3>Example: send first, then tell the AI</h3>
+  <p>Choose <i>Claude Code · my-project</i> in the destination list and press Send. Then say “I sent you some annotations” — the AI collects them with <code>get_annotations</code>.</p>
+  <div class="note">Using another MCP-capable tool (Cursor, Claude Desktop, VS Code, Goose…)? Click <b>⧉ MCP config</b> in Settings and paste the snippet into that tool's MCP settings.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="opencode">
+  <h2>OpenCode</h2>
+<pre><code>annotate integrations install opencode</code></pre>
+  <p>Restart OpenCode. While it runs it appears as <i>OpenCode · project</i> in the destination list, and batches are sent straight into the session you used most recently, with every screenshot attached.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="desktop">
+  <h2>ChatGPT, Claude &amp; other desktop apps</h2>
+  <p>Installed chat apps — ChatGPT, Claude, OpenCode Desktop, Open WebUI, LM Studio, Ollama, Jan, Msty, Perplexity and more — are listed under <b>Desktop apps</b>. No integration needed.</p>
+  <ol class="steps">
+    <li><b>Pick the app</b>For example <i>ChatGPT app</i>.</li>
+    <li><b>Choose “Send as”</b><b>Paste (review, then send)</b> types everything into the app and lets you check it. <b>Paste and send</b> also presses Enter.</li>
+    <li><b>Press ➤ Send</b>Annotate brings the app to the front and pastes your notes and each screenshot.</li>
+  </ol>
+  <div class="warn">On macOS, allow Annotate under <i>System Settings → Privacy &amp; Security → Accessibility</i> the first time — it needs this to press ⌘V for you. Your previous clipboard text is restored afterwards.</div>
+  <p>Open WebUI in a browser instead? Choose <b>Open WebUI (browser)</b> and set its address in <b>⚙ → Harnesses</b> (default <code>http://localhost:3000</code>).</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="terminal">
+  <h2>Start a new terminal session</h2>
+  <p>No session open yet? Under <b>Start in a terminal</b> you'll find every AI command-line tool Annotate detected (Pi, Claude Code, Codex, OpenCode, Gemini CLI, Copilot CLI…).</p>
+  <ol class="steps">
+    <li><b>Choose e.g. “Claude Code — new session”</b></li>
+    <li><b>Click the 📁 chip and choose your project folder</b>The tool will start there.</li>
+    <li><b>Press ➤ Send</b>A new terminal window opens and the tool starts with a request to read your annotations.</li>
+  </ol>
+  <p>Pick your favourite terminal (Terminal, iTerm, Ghostty, WezTerm, kitty, Windows Terminal…) in <b>⚙ → Harnesses → Terminal for new sessions</b>.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="wait">
+  <h2>Any agent that can run a shell command</h2>
+  <p>Some tools have no plugin system and no MCP. As long as the AI can run commands, it can use:</p>
+<pre><code>annotate wait --project "$PWD" --timeout 900</code></pre>
+  <p>This opens the Console aimed at that terminal, waits until you press Send, then prints your notes and the screenshot paths for the AI to read. Install the <b>Agent Skills</b> integration and many agents will know to do this automatically when you say “let me show you”.</p>
+<pre><code>annotate integrations install agent-skills</code></pre>
+</section>
+
+<!-- ============================================================ -->
+<section id="clipboard">
+  <h2>Copy into documents &amp; slides</h2>
+  <p>Writing a bug report, a design review or a slide deck? Every annotation can go to the clipboard.</p>
+  <ul>
+    <li><b>⧉ Copy</b> on an annotation (or <kbd>⌘/Ctrl</kbd>+<kbd>C</kbd> in the Console) copies that one.</li>
+    <li>The <b>⧉</b> button next to 🗑 copies all of them.</li>
+  </ul>
+  <p>Then paste with <kbd>⌘/Ctrl</kbd>+<kbd>V</kbd> wherever you like. Choose the style in <b>⚙ → Clipboard → Copy format</b>:</p>
+  <table>
+    <tr><th>Format</th><th>Best for</th></tr>
+    <tr><td><b>Image and notes</b> (default)</td><td>Word, PowerPoint, Pages, Google Docs, Notion, email — you get the screenshot with its note.</td></tr>
+    <tr><td><b>Screenshot with the note printed under it</b></td><td>PDF editors, whiteboards, image tools — one picture that includes the note.</td></tr>
+    <tr><td><b>Screenshot only</b></td><td>When you only want the picture.</td></tr>
+    <tr><td><b>Notes only</b></td><td>Tickets, chat messages, plain text.</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<section id="marks">
+  <h2>Several marks in one screenshot</h2>
+  <p>Found three problems on the same screen? Keep them in one picture with numbered marks.</p>
+  <ol class="steps">
+    <li><b>Double-click an annotation's screenshot</b>(or click <b>＋ Mark</b>). It opens in a larger window beside the Console.</li>
+    <li><b>Draw on the screenshot</b>Each new mark gets a number badge ①, ②, ③…</li>
+    <li><b>Write a comment for each mark</b>The list under the picture has one box per number.</li>
+    <li><b>Click Done</b>The AI receives a numbered list that matches the badges in the image.</li>
+  </ol>
+  <div class="tip">Send stays disabled until every mark has a comment, so nothing gets lost.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="shortcut">
+  <h2>Shortcuts &amp; settings</h2>
+  <ul>
+    <li><b>Change the capture shortcut:</b> ⚙ → click the <i>Capture shortcut</i> field and press the new keys. It works immediately.</li>
+    <li><b>Global shortcut off</b> means the shortcut only works while the Console is focused.</li>
+    <li><b>Countdown:</b> 0–30 seconds before Capture, so you can open a menu first.</li>
+    <li><b>When a mark crosses the app edge:</b> <i>Trim</i> keeps only the app; <i>Extend</i> widens the screenshot to include your whole mark.</li>
+    <li><b>Keep the Console open after Send:</b> handy if you annotate all day.</li>
+  </ul>
+  <p>Linux with Hyprland or sway? Annotate adds a temporary compositor key binding that runs <code>annotate capture</code>. You can also bind it yourself:</p>
+<pre><code><span class="c"># Hyprland</span>
+bind = SUPER SHIFT, A, exec, annotate capture
+<span class="c"># sway</span>
+bindsym Mod4+Shift+a exec annotate capture</code></pre>
+</section>
+
+<!-- ============================================================ -->
+<section id="custom">
+  <h2>Add your own harness</h2>
+  <p>Using a tool Annotate doesn't know? Describe it in <code>~/.annotate/harnesses.json</code> and it appears in the destination list after <b>↻ Detect harnesses</b>.</p>
+  <div class="label">~/.annotate/harnesses.json</div>
+<pre><code>[
+  { "id": "aider", "name": "Aider", "kind": "terminal",
+    "command": ["aider", "--message", "{prompt}"] },
+
+  { "id": "mychat", "name": "My Chat App", "kind": "desktop",
+    "app": ["My Chat App"], "keys": "mod+l" },
+
+  { "id": "teamchat", "name": "Team chat", "kind": "web",
+    "url": "https://chat.example.com" }
+]</code></pre>
+  <ul>
+    <li><code>{prompt}</code> becomes a one-line request pointing at your saved annotations.</li>
+    <li><code>keys</code> is pressed after the app opens (to focus its chat box). <code>mod</code> = ⌘ on Mac, Ctrl elsewhere.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<section id="cli">
+  <h2>Command-line reference</h2>
+  <table>
+    <tr><th>Command</th><th>What it does</th></tr>
+    <tr><td><code>annotate</code></td><td>Open the Console.</td></tr>
+    <tr><td><code>annotate open --target ID</code></td><td>Open / bring forward, aimed at a session.</td></tr>
+    <tr><td><code>annotate capture</code></td><td>Start a capture right away.</td></tr>
+    <tr><td><code>annotate quit</code></td><td>Close the Console.</td></tr>
+    <tr><td><code>annotate wait</code></td><td>Wait for annotations in this terminal (see <a href="#wait">above</a>).</td></tr>
+    <tr><td><code>annotate harnesses</code></td><td>List detected destinations.</td></tr>
+    <tr><td><code>annotate integrations list</code></td><td>Show integrations and whether they are installed.</td></tr>
+    <tr><td><code>annotate integrations install ID</code><br><code>annotate integrations uninstall ID</code></td><td>IDs: <code>pi</code>, <code>claude-code</code>, <code>codex</code>, <code>opencode</code>, <code>gemini</code>, <code>claude-desktop</code>, <code>cursor</code>, <code>agent-skills</code>.</td></tr>
+    <tr><td><code>annotate integrations snippet</code></td><td>Print an MCP configuration for any other tool.</td></tr>
+    <tr><td><code>annotate mcp</code></td><td>The MCP server itself (tools start this for you).</td></tr>
+  </table>
+  <p>Every batch you send is also saved as files in <code>&lt;project&gt;/.annotate/&lt;batch-id&gt;/</code>: the screenshots, <code>ANNOTATIONS.md</code> and <code>annotations.json</code>. Add <code>.annotate/</code> to your <code>.gitignore</code>.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="trouble">
+  <h2>Troubleshooting</h2>
+  <h3>“No application windows are available” or black screenshots (macOS)</h3>
+  <p>Allow <b>Screen Recording</b> for Annotate in System Settings, then quit and reopen Annotate.</p>
+  <h3>My Pi session isn't in the list</h3>
+  <p>Run <code>/reload</code> in that Pi session (after installing the integration). Check with <code>annotate harnesses</code> — live sessions are listed first.</p>
+  <h3>Pi says it needs a vision-capable model</h3>
+  <p>Switch the Pi session to a model that accepts images, then press Send again. Your annotations are still in the Console.</p>
+  <h3>Pasting into ChatGPT / Claude does nothing</h3>
+  <p>Allow <b>Accessibility</b> for Annotate (macOS). If the app opens slowly, raise <b>⚙ → Harnesses → Desktop app paste delay</b>.</p>
+  <h3>The shortcut doesn't work</h3>
+  <p>Another app may use the same keys. Record a different one in ⚙ Settings — an error appears under the field if it can't be used.</p>
+  <h3>Two <code>/annotate</code> commands in Pi</h3>
+  <p>Remove the old package: <code>pi remove https://github.com/vcsoc/pi-annotate.git</code>, then <code>/reload</code>.</p>
+  <p class="card">Still stuck? Open an issue at <a href="https://github.com/vcsoc/annotate/issues">github.com/vcsoc/annotate</a> and include the message shown in the Console. Developed by Chris Visser — <a href="https://github.com/vcsoc">github.com/vcsoc</a>.</p>
+</section>
+</main>
+
+<script>
+// Copy buttons on code blocks.
+for (const pre of document.querySelectorAll('pre')) {
+  const button = document.createElement('button');
+  button.className = 'copy'; button.textContent = 'Copy';
+  button.onclick = async () => {
+    const text = pre.querySelector('code').innerText.split('\n').filter(l => !l.trim().startsWith('#') || l.includes('bind')).join('\n').trim();
+    try { await navigator.clipboard.writeText(text); button.textContent = 'Copied ✓'; } catch { button.textContent = 'Select & copy'; }
+    setTimeout(() => { button.textContent = 'Copy'; }, 1500);
+  };
+  pre.append(button);
+}
+// OS tabs.
+for (const tab of document.querySelectorAll('.tabs button')) {
+  tab.onclick = () => {
+    const group = tab.parentElement.dataset.group;
+    for (const b of tab.parentElement.children) b.setAttribute('aria-selected', String(b === tab));
+    for (const panel of document.querySelectorAll(`.tab[data-group="${group}"]`)) panel.classList.toggle('show', panel.dataset.tab === tab.dataset.tab);
+  };
+}
+const platform = navigator.platform || '';
+document.querySelector(`.tabs button[data-tab="${/Win/.test(platform) ? 'win' : /Linux/.test(platform) ? 'linux' : 'mac'}"]`)?.click();
+// Highlight the section in view.
+const links = [...document.querySelectorAll('.side a')];
+const observer = new IntersectionObserver(entries => {
+  for (const entry of entries) if (entry.isIntersecting) for (const a of links) a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+}, { rootMargin: '-15% 0px -75% 0px' });
+document.querySelectorAll('main section').forEach(s => observer.observe(s));
+// Filter topics.
+document.querySelector('.search').addEventListener('input', event => {
+  const q = event.target.value.trim().toLowerCase();
+  for (const a of links) {
+    const section = document.querySelector(a.getAttribute('href'));
+    a.classList.toggle('hidden', Boolean(q) && !(a.textContent + ' ' + section.textContent).toLowerCase().includes(q));
+  }
+});
+// Mobile menu.
+document.querySelector('.menu-toggle').onclick = () => document.querySelector('.side').classList.toggle('open');
+for (const a of links) a.addEventListener('click', () => document.querySelector('.side').classList.remove('open'));
+</script>
+</body>
+</html>

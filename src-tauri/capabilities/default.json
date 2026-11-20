@@ -1,0 +1,11 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Annotate windows: IPC commands, events and window dragging",
+  "windows": ["toolbar", "popup", "note", "mark", "overlay", "desktop-*"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-start-dragging",
+    "core:event:default"
+  ]
+}
